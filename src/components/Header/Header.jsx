@@ -37,10 +37,10 @@ const Header = () => {
 
   return (
     <HeaderWrapper>
+      <Text>Сегодняшний курс по отношению к UAH</Text>
       <Currency>
         USD: {usd ? parseFloat(usd).toFixed(2) : 'loading...'}
       </Currency>
-      <Text>Сегодняшний курс по отношению к UAH</Text>
       <Currency>
         EUR: {eur ? parseFloat(eur).toFixed(2) : 'loading...'}
       </Currency>
