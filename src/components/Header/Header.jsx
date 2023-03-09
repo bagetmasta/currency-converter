@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { requestOptions, fetchUSD, fetchEUR } from 'utils/api.js';
 import { HeaderWrapper, Text, Currency } from './Header.styled';
+import Notiflix from 'notiflix';
 
 const Header = () => {
   const [usd, setUsd] = useState('');
@@ -15,6 +16,9 @@ const Header = () => {
       })
       .catch(error => {
         console.log(error);
+        Notiflix.Notify.failure(
+          'Sorry, you should reload this page and try again'
+        );
       });
 
     fetch(fetchUSD, requestOptions)
@@ -25,6 +29,9 @@ const Header = () => {
       })
       .catch(error => {
         console.log(error);
+        Notiflix.Notify.failure(
+          'Sorry, you should reload this page and try again'
+        );
       });
   }, []);
 

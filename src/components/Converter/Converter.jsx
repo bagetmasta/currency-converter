@@ -7,6 +7,7 @@ import {
   Select,
   Loading,
 } from './Converter.styled';
+import Notiflix from 'notiflix';
 
 const Converter = () => {
   const [currency1, setCurrency1] = useState('UAH');
@@ -33,7 +34,12 @@ const Converter = () => {
               const result = amount1 * rate;
               setAmount2(result.toFixed(2));
             })
-            .catch(error => console.log(error))
+            .catch(error => {
+              console.log(error);
+              Notiflix.Notify.failure(
+                'Sorry, you should reload this page and try again'
+              );
+            })
             .finally(() => setLoading(false));
         } else {
           setAmount2('');
@@ -60,7 +66,12 @@ const Converter = () => {
               const result = amount2 * rate;
               setAmount1(result.toFixed(2));
             })
-            .catch(error => console.log(error))
+            .catch(error => {
+              console.log(error);
+              Notiflix.Notify.failure(
+                'Sorry, you should reload this page and try again'
+              );
+            })
             .finally(() => setLoading(false));
         } else {
           setAmount1('');
