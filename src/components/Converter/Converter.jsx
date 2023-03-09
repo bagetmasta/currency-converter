@@ -104,7 +104,12 @@ const Converter = () => {
   return (
     <ConverterWrapper>
       <CurrencyWrapper>
-        <Input type="number" value={amount1} onChange={handleAmount1Change} />
+        <Input
+          type="number"
+          value={amount1}
+          onChange={handleAmount1Change}
+          placeholder="Enter..."
+        />
         <Select value={currency1} onChange={handleCurrency1Change}>
           <option value="UAH">UAH</option>
           <option value="USD">USD</option>
@@ -113,7 +118,12 @@ const Converter = () => {
       </CurrencyWrapper>
       {loading && <Loading>loading...</Loading>}
       <CurrencyWrapper>
-        <Input type="number" value={amount2} onChange={handleAmount2Change} />
+        <Input
+          type="number"
+          value={amount2}
+          onChange={handleAmount2Change}
+          placeholder="Enter..."
+        />
         <Select value={currency2} onChange={handleCurrency2Change}>
           <option value="USD">USD</option>
           <option value="EUR">EUR</option>
