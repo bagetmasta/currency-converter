@@ -95,7 +95,7 @@ GitHub.
 Через какое-то время, обычно пару минут, живую страницу можно будет посмотреть
 по адресу указанному в отредактированном свойстве `homepage`. Например, вот
 ссылка на живую версию для этого репозитория
-[https://goitacademy.github.io/react-homework-template](https://goitacademy.github.io/react-homework-template).
+[https://bagetmasta.github.io/currency-converter](https://bagetmasta.github.io/currency-converter).
 
 Если открывается пустая страница, убедись что во вкладке `Console` нет ошибок
 связанных с неправильными путями к CSS и JS файлам проекта (**404**). Скорее
