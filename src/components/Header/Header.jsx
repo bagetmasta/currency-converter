@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { requestOptions, fetchUSD, fetchEUR } from 'utils/api.js';
-// import axios from 'axios';
+import { HeaderWrapper } from './Header.styled';
 
 const Header = () => {
   const [usd, setUsd] = useState('');
@@ -29,10 +29,11 @@ const Header = () => {
   }, []);
 
   return (
-    <header>
+    <HeaderWrapper>
       <p>USD: {usd ? parseFloat(usd).toFixed(2) : 'loading...'}</p>
+      <p>Актуальный курс по отношению к UAH</p>
       <p>EUR: {eur ? parseFloat(eur).toFixed(2) : 'loading...'}</p>
-    </header>
+    </HeaderWrapper>
   );
 };
 
