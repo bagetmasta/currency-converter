@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { requestOptions } from 'utils/api';
-import { ConverterWrapper } from './Converter.styled';
-// import debounce from 'lodash.debounce';
+import {
+  ConverterWrapper,
+  CurrencyWrapper,
+  Input,
+  Select,
+  Loading,
+} from './Converter.styled';
 
 const Converter = () => {
   const [currency1, setCurrency1] = useState('UAH');
@@ -27,11 +32,6 @@ const Converter = () => {
               setRate(rateInfo.toFixed(4));
               const result = amount1 * rate;
               setAmount2(result.toFixed(2));
-
-              // const debouncesetAmount2 = debounce(() => {
-              // }, 1000);
-
-              // debouncesetAmount2();
             })
             .catch(error => console.log(error))
             .finally(() => setLoading(false));
@@ -59,11 +59,6 @@ const Converter = () => {
               setRate(rateInfo.toFixed(4));
               const result = amount2 * rate;
               setAmount1(result.toFixed(2));
-
-              // const debouncesetAmount1 = debounce(() => {
-              // }, 1000);
-
-              // debouncesetAmount1();
             })
             .catch(error => console.log(error))
             .finally(() => setLoading(false));
@@ -92,29 +87,28 @@ const Converter = () => {
   };
 
   const handleCurrency2Change = e => {
-    setLastChanged('amount1');
     setCurrency2(e.target.value);
   };
 
   return (
     <ConverterWrapper>
-      <div>
-        <input type="number" value={amount1} onChange={handleAmount1Change} />
-        <select value={currency1} onChange={handleCurrency1Change}>
+      <CurrencyWrapper>
+        <Input type="number" value={amount1} onChange={handleAmount1Change} />
+        <Select value={currency1} onChange={handleCurrency1Change}>
           <option value="UAH">UAH</option>
           <option value="USD">USD</option>
           <option value="EUR">EUR</option>
-        </select>
-      </div>
-      {loading && <p>loading...</p>}
-      <div>
-        <input type="number" value={amount2} onChange={handleAmount2Change} />
-        <select value={currency2} onChange={handleCurrency2Change}>
+        </Select>
+      </CurrencyWrapper>
+      {loading && <Loading>loading...</Loading>}
+      <CurrencyWrapper>
+        <Input type="number" value={amount2} onChange={handleAmount2Change} />
+        <Select value={currency2} onChange={handleCurrency2Change}>
           <option value="USD">USD</option>
           <option value="EUR">EUR</option>
           <option value="UAH">UAH</option>
-        </select>
-      </div>
+        </Select>
+      </CurrencyWrapper>
     </ConverterWrapper>
   );
 };
