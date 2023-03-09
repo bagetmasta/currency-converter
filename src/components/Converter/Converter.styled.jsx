@@ -32,6 +32,7 @@ export const Input = styled.input`
   border: none;
   border-radius: 8px;
   margin-bottom: 16px;
+  background-color: #f5f5f5;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
 
