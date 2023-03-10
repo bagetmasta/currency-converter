@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { requestOptions, fetchUSD, fetchEUR } from 'utils/api.js';
+import { requestOptions, fetchUSD, fetchEUR } from 'api/api.js';
 import { HeaderWrapper, Text, Currency } from './Header.styled';
 import Notiflix from 'notiflix';
 

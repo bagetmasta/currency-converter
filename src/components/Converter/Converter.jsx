@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { requestOptions } from 'utils/api';
+import { requestOptions } from 'api/api';
 import {
   ConverterWrapper,
   CurrencyWrapper,
