@@ -12,7 +12,6 @@ import Notiflix from 'notiflix';
 const Converter = () => {
   const [currency1, setCurrency1] = useState('UAH');
   const [currency2, setCurrency2] = useState('USD');
-  const [rate, setRate] = useState('');
   const [amount1, setAmount1] = useState('');
   const [amount2, setAmount2] = useState('');
   const [lastChanged, setLastChanged] = useState('');
@@ -20,97 +19,80 @@ const Converter = () => {
 
   useEffect(() => {
     if (lastChanged !== 'amount1') {
-      const getRate1 = () => {
-        if (amount1 > 0 && amount1 !== '') {
-          setLoading(true);
-          fetch(
-            `https://api.apilayer.com/exchangerates_data/convert?to=${currency2}&from=${currency1}&amount=${amount1}`,
-            requestOptions
-          )
-            .then(response => response.json())
-            .then(data => {
-              const rateInfo = data.info.rate;
-              setRate(rateInfo.toFixed(4));
-              const result = amount1 * rate;
-              setAmount2(result.toFixed(2));
-            })
-            .catch(error => {
-              console.log(error);
-              Notiflix.Notify.failure(
-                'Sorry, you should reload this page and try again'
-              );
-            })
-            .finally(() => setLoading(false));
-        } else {
-          setAmount2('');
-        }
-      };
-
-      getRate1();
+      updateAmounts('amount1', amount1, currency1, currency2);
     }
-  }, [amount1, currency1, currency2, lastChanged, rate]);
+  }, [amount1, currency1, currency2, lastChanged]);
 
   useEffect(() => {
     if (lastChanged !== 'amount2') {
-      const getRate2 = () => {
-        if (amount2 > 0 && amount2 !== '') {
-          setLoading(true);
-          fetch(
-            `https://api.apilayer.com/exchangerates_data/convert?to=${currency1}&from=${currency2}&amount=${amount2}`,
-            requestOptions
-          )
-            .then(response => response.json())
-            .then(data => {
-              const rateInfo = data.info.rate;
-              setRate(rateInfo.toFixed(4));
-              const result = amount2 * rate;
-              setAmount1(result.toFixed(2));
-            })
-            .catch(error => {
-              console.log(error);
-              Notiflix.Notify.failure(
-                'Sorry, you should reload this page and try again'
-              );
-            })
-            .finally(() => setLoading(false));
-        } else {
-          setAmount1('');
-        }
-      };
-
-      getRate2();
+      updateAmounts('amount2', amount2, currency2, currency1);
     }
-  }, [amount2, currency1, currency2, lastChanged, rate]);
+  }, [amount2, currency1, currency2, lastChanged]);
 
-  const handleAmount1Change = e => {
-    setLastChanged('amount2');
-    setAmount1(e.target.value);
+  const updateAmounts = (type, amount, fromCurrency, toCurrency) => {
+    if (amount > 0 && amount !== '') {
+      setLoading(true);
+      fetch(
+        `https://api.apilayer.com/exchangerates_data/convert?to=${toCurrency}&from=${fromCurrency}&amount=${amount}`,
+        requestOptions
+      )
+        .then(response => response.json())
+        .then(data => {
+          const rateInfo = data.info.rate;
+          if (type === 'amount1') {
+            const result = amount * rateInfo;
+            setAmount2(result.toFixed(2));
+          } else {
+            const result = amount * rateInfo;
+            setAmount1(result.toFixed(2));
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          Notiflix.Notify.failure(
+            'Sorry,you should reload this page and try again'
+          );
+        })
+        .finally(() => setLoading(false));
+    } else {
+      if (type === 'amount1') {
+        setAmount2('');
+      } else {
+        setAmount1('');
+      }
+    }
   };
 
-  const handleAmount2Change = e => {
-    setLastChanged('amount1');
-    setAmount2(e.target.value);
-  };
-
-  const handleCurrency1Change = e => {
-    setLastChanged('amount2');
-    setCurrency1(e.target.value);
-  };
-
-  const handleCurrency2Change = e => {
-    setCurrency2(e.target.value);
+  const handleChange = e => {
+    const { id, value } = e.target;
+    if (id === 'amount1') {
+      setLastChanged('amount2');
+      setAmount1(value);
+    }
+    if (id === 'amount2') {
+      setLastChanged('amount1');
+      setAmount2(value);
+    }
+    if (id === 'currency1') {
+      setLastChanged('amount2');
+      setCurrency1(value);
+    }
+    if (id === 'currency2') {
+      setCurrency2(value);
+    }
   };
 
   return (
     <ConverterWrapper>
       <CurrencyWrapper>
         <Input
+          id="amount1"
           type="number"
-          value={amount1}
-          onChange={handleAmount1Change}
+          value={amount1 ? amount1 : ''}
+          onChange={handleChange}
           placeholder="Enter..."
         />
-        <Select value={currency1} onChange={handleCurrency1Change}>
+        <Select id="currency1" value={currency1} onChange={handleChange}>
           <option value="UAH">UAH</option>
           <option value="USD">USD</option>
           <option value="EUR">EUR</option>
@@ -119,12 +101,13 @@ const Converter = () => {
       {loading && <Loading>loading...</Loading>}
       <CurrencyWrapper>
         <Input
+          id="amount2"
           type="number"
-          value={amount2}
-          onChange={handleAmount2Change}
+          value={amount2 ? amount2 : ''}
+          onChange={handleChange}
           placeholder="Enter..."
         />
-        <Select value={currency2} onChange={handleCurrency2Change}>
+        <Select id="currency2" value={currency2} onChange={handleChange}>
           <option value="USD">USD</option>
           <option value="EUR">EUR</option>
           <option value="UAH">UAH</option>
