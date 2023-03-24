@@ -8,27 +8,18 @@ const Header = () => {
   const [eur, setEur] = useState('');
 
   useEffect(() => {
-    fetch(fetchEUR, requestOptions)
-      .then(response => response.json())
-      .then(data => {
-        const eur = data.rates.UAH;
-        setEur(eur);
+    Promise.all([
+      fetch(fetchUSD, requestOptions),
+      fetch(fetchEUR, requestOptions),
+    ])
+      .then(([usdResponse, eurResponse]) =>
+        Promise.all([usdResponse.json(), eurResponse.json()])
+      )
+      .then(([usdData, eurData]) => {
+        setUsd(usdData?.rates?.UAH);
+        setEur(eurData?.rates?.UAH);
       })
       .catch(error => {
-        console.log(error);
-        Notiflix.Notify.failure(
-          'Sorry, you should reload this page and try again'
-        );
-      });
-
-    fetch(fetchUSD, requestOptions)
-      .then(response => response.json())
-      .then(data => {
-        const usd = data.rates.UAH;
-        setUsd(usd);
-      })
-      .catch(error => {
-        console.log(error);
         Notiflix.Notify.failure(
           'Sorry, you should reload this page and try again'
         );
