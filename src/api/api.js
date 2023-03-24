@@ -1,5 +1,5 @@
 const myHeaders = new Headers();
-myHeaders.append('apikey', 'PETc8rQ6V0IHNzOtZs88bBJKxGA7VwBJ');
+myHeaders.append('apikey', 'UHHsjEI8sZ7QC9IblyeKQlrqjujD5Kfm');
 
 export const requestOptions = {
   method: 'GET',
@@ -9,4 +9,3 @@ export const requestOptions = {
 
 export const fetchUSD = `https://api.apilayer.com/exchangerates_data/latest?symbols=UAH&base=USD`;
 export const fetchEUR = `https://api.apilayer.com/exchangerates_data/latest?symbols=UAH&base=EUR`;
-
