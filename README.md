@@ -1,24 +1,24 @@
-# Описание проекта Currency converter
+# Project Description: Currency Converter
 
-Currency converter отображает актуальный курс USD и EUR по отношению к UAH.
-Также Вы можете провести конвертацию в обе стороны между предложенными валютами:
-UAH, USD, EUR.
+The Currency Converter displays the current exchange rates for USD and EUR in
+relation to UAH. You can also perform conversions in both directions between the
+offered currencies: UAH, USD, EUR.
 
-Вся информация о курсе предоставляется ресурсом https://apilayer.com/. Прошу
-обратить внимание, что ресурс отображает банковский курс на сегодняшний день, и
-он может отличаться от курса в пунктах обмена валют.
+All exchange rate information is provided by the resource https://apilayer.com/.
+Please note that the resource displays the bank exchange rate for today and it
+may differ from the exchange rate at currency exchange points.
 
-Для того, чтобы узнать курс в пунктах обмена валют, Вы можете обратиться к
+To find out the exchange rate at currency exchange points, you can refer to
 https://minfin.com.ua/.
 
-Для инициализации и локального запуска проекта следует:
+To initialize and locally run the project, follow these steps:
 
 1. npm i
 2. npm start
 
 # React homework template
 
-Этот проект был создан при помощи
-[Create React App](https://github.com/facebook/create-react-app). Для знакомства
-и настройки дополнительных возможностей
-[обратитесь к документации](https://facebook.github.io/create-react-app/docs/getting-started).
+This project was created using
+[Create React App](https://github.com/facebook/create-react-app). To learn more
+about the setup and configuration of additional features, please refer to the
+[documentation](https://facebook.github.io/create-react-app/docs/getting-started).
