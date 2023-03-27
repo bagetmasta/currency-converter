@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { requestOptions } from 'api/api';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   ConverterWrapper,
   CurrencyWrapper,
   Input,
   Select,
-  Loading,
 } from './Converter.styled';
-import Notiflix from 'notiflix';
+import { useCurrencyConverter } from 'hooks/api-hook';
 
 const Converter = () => {
   const [currency1, setCurrency1] = useState('UAH');
@@ -15,70 +13,70 @@ const Converter = () => {
   const [amount1, setAmount1] = useState('');
   const [amount2, setAmount2] = useState('');
   const [lastChanged, setLastChanged] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { convertCurrency } = useCurrencyConverter();
 
-  useEffect(() => {
-    if (lastChanged !== 'amount1') {
-      updateAmounts('amount1', amount1, currency1, currency2);
-    }
-  }, [amount1, currency1, currency2, lastChanged]);
-
-  useEffect(() => {
-    if (lastChanged !== 'amount2') {
-      updateAmounts('amount2', amount2, currency2, currency1);
-    }
-  }, [amount2, currency1, currency2, lastChanged]);
-
-  const updateAmounts = (type, amount, fromCurrency, toCurrency) => {
-    if (amount > 0 && amount !== '') {
-      setLoading(true);
-      fetch(
-        `https://api.apilayer.com/exchangerates_data/convert?to=${toCurrency}&from=${fromCurrency}&amount=${amount}`,
-        requestOptions
-      )
-        .then(response => response.json())
-        .then(data => {
-          const rateInfo = data.info.rate;
-          if (type === 'amount1') {
-            const result = amount * rateInfo;
-            setAmount2(result.toFixed(2));
-          } else {
-            const result = amount * rateInfo;
-            setAmount1(result.toFixed(2));
+  const fetchAPI = useCallback(
+    (type, amount, fromCurrency, toCurrency) => {
+      if (amount > 0) {
+        return convertCurrency(amount, fromCurrency, toCurrency).then(
+          convertedRate => {
+            const result = amount * convertedRate;
+            if (type === 'amount1') {
+              setAmount2(result.toFixed(2));
+            } else {
+              setAmount1(result.toFixed(2));
+            }
           }
-        })
-        .catch(error => {
-          console.log(error);
-          Notiflix.Notify.failure(
-            'Sorry,you should reload this page and try again'
-          );
-        })
-        .finally(() => setLoading(false));
-    } else {
-      if (type === 'amount1') {
-        setAmount2('');
+        );
       } else {
-        setAmount1('');
+        if (type === 'amount1') {
+          setAmount2('');
+        } else {
+          setAmount1('');
+        }
       }
+    },
+    [convertCurrency]
+  );
+
+  useEffect(() => {
+    if (amount1 && currency1 && currency2 && lastChanged !== 'amount1') {
+      fetchAPI('amount1', amount1, currency1, currency2);
+    } else if (amount2 && currency1 && currency2 && lastChanged !== 'amount2') {
+      fetchAPI('amount2', amount2, currency2, currency1);
     }
-  };
+  }, [
+    amount1,
+    currency1,
+    currency2,
+    lastChanged,
+    convertCurrency,
+    setAmount2,
+    amount2,
+    fetchAPI,
+  ]);
 
   const handleChange = e => {
     const { id, value } = e.target;
-    if (id === 'amount1') {
-      setLastChanged('amount2');
-      setAmount1(value);
-    }
-    if (id === 'amount2') {
-      setLastChanged('amount1');
-      setAmount2(value);
-    }
-    if (id === 'currency1') {
-      setLastChanged('amount2');
-      setCurrency1(value);
-    }
-    if (id === 'currency2') {
-      setCurrency2(value);
+
+    switch (id) {
+      case 'amount1':
+        setLastChanged('amount2');
+        setAmount1(value);
+        break;
+      case 'amount2':
+        setLastChanged('amount1');
+        setAmount2(value);
+        break;
+      case 'currency1':
+        setLastChanged('amount2');
+        setCurrency1(value);
+        break;
+      case 'currency2':
+        setCurrency2(value);
+        break;
+      default:
+        break;
     }
   };
 
@@ -98,7 +96,6 @@ const Converter = () => {
           <option value="EUR">EUR</option>
         </Select>
       </CurrencyWrapper>
-      {loading && <Loading>loading...</Loading>}
       <CurrencyWrapper>
         <Input
           id="amount2"
