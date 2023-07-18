@@ -7,7 +7,7 @@ export const App = () => {
     <>
       <Header />
       <Converter />
-      <PageTitle>ITOP1000</PageTitle>
+      <PageTitle>Ukraine</PageTitle>
     </>
   );
 };
